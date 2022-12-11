@@ -7,7 +7,7 @@ exports.createMember = (req, res, next) =>  {
     name : memberName
   });
   member.save()
-  .then(() => res.status(201).json({ message: "Le membre est ajouté à la liste !"}))
+  .then(() => res.status(201).json({ message: "Le membre est ajouté à la liste !", object: member}))
   .catch((error) => res.status(400).json({ error }));
 };
 

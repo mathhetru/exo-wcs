@@ -31,6 +31,7 @@
 <script>
 import axios from "axios";
 import router from "../router";
+import { MembersService } from "../services/MembersService";
 
 export default {
   name: 'addMember',
@@ -41,19 +42,21 @@ export default {
         }
     },
     methods: {
-      addName() {
-          if (this.nameMember === "") {
-              alert("Vous devez remplir le formulaire pour ajouter un nom d'équipage !");
-              return;
-          };
-          axios.post("http://localhost:3000/api/members", { name: this.nameMember })
-              .then(function (response) {
-                  })
-              .catch(error => alert("Erreur : " + error));
+      addName(e) {
+        e.preventDefault();
+        if (this.nameMember === "") {
+            alert("Vous devez ajouter un nom d'équipier avant d'envoyer !");
+            return;
+        };
+        MembersService().addMemberName(this.nameMember)
+            .then((response) => {
+              this.members.push(response.data.object);
+            })
+            .catch(error => alert("Erreur : " + error));
       }
     },
     mounted(){
-      axios.get("http://localhost:3000/api/members")
+      MembersService().showMembers()
             .then((response) => {
               this.members = response.data;
             })
